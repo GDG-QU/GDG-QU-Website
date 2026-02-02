@@ -11,7 +11,7 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import { colors, homeStats as stats } from "../../data/homeData";
-import gdg_icon from "../../Assets/logos/gdg_icon.jpg";
+import gdg_icon from "../../assets/logos/gdg_icon.jpg";
 import { Link } from "react-router-dom";
 
 const cards = [

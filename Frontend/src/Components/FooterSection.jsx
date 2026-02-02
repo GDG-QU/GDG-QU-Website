@@ -15,7 +15,7 @@ import {
   FaRegCopyright,
   FaYoutube,
 } from "react-icons/fa";
-import gdg_long_white from "../Assets/logos/gdg_long_white.png";
+import gdg_long_white from "../assets/logos/gdg_long_white.png";
 import { homeStats } from "../data/homeData";
 import { href, Link } from "react-router-dom";
 

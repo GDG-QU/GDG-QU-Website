@@ -19,10 +19,10 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 
-import red_frame from "../../Assets/frames/square-red.png";
-import blue_frame from "../../Assets/frames/square-blue.png";
-import yellow_frame from "../../Assets/frames/square-yellow.png";
-import green_frame from "../../Assets/frames/square-green.png";
+import red_frame from "../../assets/frames/square-red.png";
+import blue_frame from "../../assets/frames/square-blue.png";
+import yellow_frame from "../../assets/frames/square-yellow.png";
+import green_frame from "../../assets/frames/square-green.png";
 
 const colors = {
   blue: "#4285f4",

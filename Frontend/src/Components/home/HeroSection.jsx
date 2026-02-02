@@ -16,7 +16,7 @@ import {
   FaStar,
   FaInstagram,
 } from "react-icons/fa";
-import gdg_icon from "../../Assets/logos/gdg_icon.jpg";
+import gdg_icon from "../../assets/logos/gdg_icon.jpg";
 import { homeStats as stats, colors } from "../../data/homeData";
 
 const AnimatedIllustration = () => {
@@ -95,10 +95,10 @@ const AnimatedIllustration = () => {
           ctx.shadowBlur = 0;
         });
 
-                requestAnimationFrame(animate);
-            };
+        requestAnimationFrame(animate);
+      };
 
-            animate();
+      animate();
 
       return () => {
         window.removeEventListener("resize", setCanvasSize);
@@ -375,7 +375,12 @@ const HeroSection = () => {
   }, []);
 
   const socialLinks = [
-    { icon: <FaGithub />, color: colors.blue, href: "https://github.com/GDSCQU", label: "GitHub" },
+    {
+      icon: <FaGithub />,
+      color: colors.blue,
+      href: "https://github.com/GDSCQU",
+      label: "GitHub",
+    },
     {
       icon: <FaLinkedin />,
       color: colors.green,
@@ -388,11 +393,13 @@ const HeroSection = () => {
       href: "https://x.com/GDG_QuantumUni",
       label: "Twitter",
     },
-    { icon: <FaYoutube />,
+    {
+      icon: <FaYoutube />,
       color: colors.red,
       href: "https://www.youtube.com/@gdscquantumuniversity6559/featured",
-      label: "YouTube" },
-      {
+      label: "YouTube",
+    },
+    {
       icon: <FaInstagram />,
       color: colors.yellow,
       href: "https://www.instagram.com/gdgquantumuniversity?igsh=dnBvOHp3ZTV2aWZx",

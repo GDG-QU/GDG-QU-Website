@@ -13,7 +13,7 @@ import {
   FaCloud,
   FaLightbulb,
 } from "react-icons/fa";
-import gdg_logo from "../../Assets/logos/gdg_icon.jpg";
+import gdg_logo from "../../assets/logos/gdg_icon.jpg";
 
 const BRAND_COLORS = {
   blue: "#4285F4",

@@ -11,7 +11,7 @@ import {
   FaTimes,
   FaProjectDiagram,
 } from "react-icons/fa";
-import gdg_long from "../Assets/logos/gdg_long.png";
+import gdg_long from "../assets/logos/gdg_long.png";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 

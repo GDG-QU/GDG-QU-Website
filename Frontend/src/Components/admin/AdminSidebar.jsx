@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GDG_Logo from "../../Assets/images/gdg_logo.webp";
+import GDG_Logo from "../../assets/images/gdg_logo.webp";
 import { MdPerson, MdMenu, MdClose } from "react-icons/md";
 import { FaHome, FaGraduationCap, FaCalendarAlt } from "react-icons/fa";
 import { FaRoad, FaMessage } from "react-icons/fa6";
@@ -142,7 +142,7 @@ const AdminSidebar = () => {
         <div className="mt-auto flex items-center justify-center pt-4">
           <button
             type="button"
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate("/profile")}
             className="grid place-items-center rounded-full p-1.5 text-google-blue bg-google-blue/10 hover:bg-google-blue/20 transition"
           >
             <MdPerson size={32} />

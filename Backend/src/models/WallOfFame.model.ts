@@ -10,35 +10,47 @@ const WallOfFameSchema = new Schema(
             minlength: 2,
             maxlength: 50,
         },
-        achievement: {
+        position: {
+            type: String,
+            required: true,
+            trim: true,
+            maxlength: 100,
+        },
+        bio: {
             type: String,
             required: true,
             trim: true,
             minlength: 10,
             maxlength: 500,
         },
-        track: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        highlight: {
+        image: {
             type: String,
             trim: true,
-            maxlength: 200,
         },
-        quote: {
+        badge: {
             type: String,
             trim: true,
-            maxlength: 300,
+            maxlength: 50,
         },
-        badges: {
+        skills: {
             type: [String],
             default: [],
         },
+        social: {
+            linkedin: { type: String, trim: true, default: null },
+            github: { type: String, trim: true, default: null },
+            twitter: { type: String, trim: true, default: null },
+            instagram: { type: String, trim: true, default: null },
+        },
+        color: {
+            type: String,
+            enum: ["blue", "red", "yellow", "green"],
+            default: "blue",
+        },
         year: {
-            type: Number,
+            type: String,
             required: true,
+            trim: true,
         },
     },
     { timestamps: true }

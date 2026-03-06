@@ -10,48 +10,58 @@ import { body } from "express-validator";
 
 const wallOfFameRouter = Router();
 
+// Public
 wallOfFameRouter.get("/", getWallOfFameEntries);
 
+// Admin-only below
 wallOfFameRouter.use(adminAuthMiddleware);
+
 wallOfFameRouter.post(
     "/",
     [
         body("name").isString().notEmpty().isLength({ min: 2, max: 50 }),
-        body("achievement")
-            .isString()
-            .notEmpty()
-            .isLength({ min: 10, max: 500 }),
-        body("track").isString().notEmpty(),
-        body("highlight").optional().isString().isLength({ max: 200 }),
-        body("quote").optional().isString().isLength({ max: 300 }),
-        body("badges").optional().isArray(),
-        body("year").isInt({ min: 1900, max: new Date().getFullYear() }),
+        body("position").isString().notEmpty().isLength({ max: 100 }),
+        body("bio").isString().notEmpty().isLength({ min: 10, max: 500 }),
+        body("image").optional({ values: "null" }).isString(),
+        body("badge").optional({ values: "null" }).isString().isLength({ max: 50 }),
+        body("skills").optional().isArray(),
+        body("skills.*").optional().isString(),
+        body("social").optional().isObject(),
+        body("social.linkedin").optional({ values: "null" }).isString(),
+        body("social.github").optional({ values: "null" }).isString(),
+        body("social.twitter").optional({ values: "null" }).isString(),
+        body("social.instagram").optional({ values: "null" }).isString(),
+        body("color")
+            .optional()
+            .isIn(["blue", "red", "yellow", "green"]),
+        body("year").isString().notEmpty(),
     ],
     addWallOfFameEntry
 );
+
 wallOfFameRouter.put(
     "/:id",
     [
-        body("name")
+        body("name").optional().isString().notEmpty().isLength({ min: 2, max: 50 }),
+        body("position").optional().isString().notEmpty().isLength({ max: 100 }),
+        body("bio").optional().isString().notEmpty().isLength({ min: 10, max: 500 }),
+        body("image").optional({ values: "null" }).isString(),
+        body("badge").optional({ values: "null" }).isString().isLength({ max: 50 }),
+        body("skills").optional().isArray(),
+        body("skills.*").optional().isString(),
+        body("social").optional().isObject(),
+        body("social.linkedin").optional({ values: "null" }).isString(),
+        body("social.github").optional({ values: "null" }).isString(),
+        body("social.twitter").optional({ values: "null" }).isString(),
+        body("social.instagram").optional({ values: "null" }).isString(),
+        body("color")
             .optional()
-            .isString()
-            .notEmpty()
-            .isLength({ min: 2, max: 50 }),
-        body("achievement")
-            .optional()
-            .isString()
-            .notEmpty()
-            .isLength({ min: 10, max: 500 }),
-        body("track").optional().isString().notEmpty(),
-        body("highlight").optional().isString().isLength({ max: 200 }),
-        body("quote").optional().isString().isLength({ max: 300 }),
-        body("badges").optional().isArray(),
-        body("year")
-            .optional()
-            .isInt({ min: 1900, max: new Date().getFullYear() }),
+            .isIn(["blue", "red", "yellow", "green"]),
+        body("year").optional().isString().notEmpty(),
     ],
     updateWallOfFameEntry
 );
+
 wallOfFameRouter.delete("/:id", deleteWallOfFameEntry);
 
 export default wallOfFameRouter;

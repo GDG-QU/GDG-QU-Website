@@ -18,6 +18,7 @@ import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdminEvent from "./Pages/Admin/AdminEvent";
 import AdminTeamPage from "./Pages/Admin/AdminTeam";
 import AdminContactPage from "./Pages/Admin/AdminContactPage";
+import AdminWallOfFamePage from "./Pages/Admin/AdminWallOfFame";
 import AdminProtected from "./utils/AdminProtected";
 
 //TODO: Modularize the whole thing later
@@ -55,6 +56,7 @@ function App() {
                 <Route path="event" element={<AdminEvent />} />
                 <Route path="team" element={<AdminTeamPage />} />
                 <Route path="contact" element={<AdminContactPage />} />
+                <Route path="wall-of-fame" element={<AdminWallOfFamePage />} />
               </Route>
             </Routes>
           </Router>

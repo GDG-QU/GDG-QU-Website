@@ -12,13 +12,14 @@ import {
     FaCalendarAlt,
     FaUsers,
     FaAward,
+    FaSpinner,
 } from "react-icons/fa";
 import {
-    wallOfFameData,
-    availableYears,
     googleColors,
     googleBgColors,
 } from "../data/wallOfFameData";
+
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/wof`;
 
 const socialIcons = {
     linkedin: FaLinkedin,
@@ -28,7 +29,7 @@ const socialIcons = {
 };
 
 // Year Selector - Horizontal tabs for desktop, dropdown for mobile
-const YearSelector = ({ selectedYear, onYearChange }) => {
+const YearSelector = ({ selectedYear, onYearChange, availableYears }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -133,6 +134,11 @@ const MemberCard = ({ member, index, isVisible }) => {
     // On mobile, always show cards immediately
     const shouldShow = isMobile || isVisible;
 
+    // Build social object for rendering
+    const socialEntries = member.social
+        ? Object.entries(member.social).filter(([, url]) => url)
+        : [];
+
     return (
         <div
             className={`transform transition-all duration-500 ease-out ${shouldShow
@@ -177,11 +183,20 @@ const MemberCard = ({ member, index, isVisible }) => {
                                     }`}
                                 style={{ backgroundColor: color }}
                             />
-                            <img
-                                src={member.image}
-                                alt={member.name}
-                                className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover border-2 border-white shadow-lg transition-transform duration-300 group-hover:scale-105"
-                            />
+                            {member.image ? (
+                                <img
+                                    src={member.image}
+                                    alt={member.name}
+                                    className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover border-2 border-white shadow-lg transition-transform duration-300 group-hover:scale-105"
+                                />
+                            ) : (
+                                <div
+                                    className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl border-2 border-white shadow-lg flex items-center justify-center text-white text-2xl font-bold"
+                                    style={{ backgroundColor: color }}
+                                >
+                                    {member.name?.charAt(0)}
+                                </div>
+                            )}
                             {/* Position badge */}
                             <div
                                 className="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg flex items-center justify-center shadow-lg"
@@ -202,10 +217,12 @@ const MemberCard = ({ member, index, isVisible }) => {
                             >
                                 {member.position}
                             </p>
-                            <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                                <FaAward className="text-yellow-500" />
-                                {member.badge}
-                            </div>
+                            {member.badge && (
+                                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                    <FaAward className="text-yellow-500" />
+                                    {member.badge}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -215,45 +232,49 @@ const MemberCard = ({ member, index, isVisible }) => {
                     </p>
 
                     {/* Skills */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {member.skills.map((skill, i) => (
-                            <span
-                                key={i}
-                                className="px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-300"
-                                style={{
-                                    backgroundColor: isHovered ? color : bgColor,
-                                    color: isHovered ? "white" : color,
-                                }}
-                            >
-                                {skill}
-                            </span>
-                        ))}
-                    </div>
-
-                    {/* Social Links */}
-                    <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
-                        {Object.entries(member.social).map(([platform, url]) => {
-                            if (!url) return null;
-                            const Icon = socialIcons[platform];
-                            return (
-                                <a
-                                    key={platform}
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="p-2.5 rounded-xl bg-gray-100 text-gray-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg"
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = color;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.backgroundColor = "";
+                    {member.skills && member.skills.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {member.skills.map((skill, i) => (
+                                <span
+                                    key={i}
+                                    className="px-3 py-1 rounded-lg text-xs font-semibold transition-all duration-300"
+                                    style={{
+                                        backgroundColor: isHovered ? color : bgColor,
+                                        color: isHovered ? "white" : color,
                                     }}
                                 >
-                                    <Icon size={16} />
-                                </a>
-                            );
-                        })}
-                    </div>
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Social Links */}
+                    {socialEntries.length > 0 && (
+                        <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
+                            {socialEntries.map(([platform, url]) => {
+                                const Icon = socialIcons[platform];
+                                if (!Icon) return null;
+                                return (
+                                    <a
+                                        key={platform}
+                                        href={url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-2.5 rounded-xl bg-gray-100 text-gray-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.backgroundColor = color;
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.backgroundColor = "";
+                                        }}
+                                    >
+                                        <Icon size={16} />
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -288,12 +309,42 @@ const TimelinePath = ({ progress }) => {
 
 // Main Wall of Fame Page
 const WallOfFame = () => {
-    const [selectedYear, setSelectedYear] = useState(availableYears[0]);
+    const [wallOfFameData, setWallOfFameData] = useState({});
+    const [availableYears, setAvailableYears] = useState([]);
+    const [selectedYear, setSelectedYear] = useState("");
     const [visibleCards, setVisibleCards] = useState(new Set());
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const containerRef = useRef(null);
     const cardsRef = useRef([]);
+
+    // Fetch data from backend
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                if (data.success && data.data) {
+                    const { grouped, availableYears: years } = data.data;
+                    setWallOfFameData(grouped || {});
+                    setAvailableYears(years || []);
+                    if (years && years.length > 0) {
+                        setSelectedYear(years[0]);
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch Wall of Fame data:", err);
+                setError("Failed to load data. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     const currentMembers = wallOfFameData[selectedYear] || [];
 
@@ -359,6 +410,48 @@ const WallOfFame = () => {
     // Split members for alternating layout on desktop
     const leftMembers = currentMembers.filter((_, i) => i % 2 === 0);
     const rightMembers = currentMembers.filter((_, i) => i % 2 === 1);
+
+    // Loading state
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <FaSpinner className="animate-spin text-4xl text-blue-500 mx-auto mb-4" />
+                    <p className="text-gray-500 font-medium">Loading Wall of Fame...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-red-500 font-medium mb-4">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    // Empty state
+    if (availableYears.length === 0) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <FaTrophy className="text-5xl text-yellow-400 mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Wall of Fame</h2>
+                    <p className="text-gray-500">No entries yet. Check back later!</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
@@ -435,6 +528,7 @@ const WallOfFame = () => {
                         <YearSelector
                             selectedYear={selectedYear}
                             onYearChange={handleYearChange}
+                            availableYears={availableYears}
                         />
                     </div>
 
@@ -490,7 +584,7 @@ const WallOfFame = () => {
                 >
                     {currentMembers.map((member, index) => (
                         <div
-                            key={member.id}
+                            key={member._id || index}
                             data-index={index}
                             ref={(el) => (cardsRef.current[index] = el)}
                         >
@@ -520,7 +614,7 @@ const WallOfFame = () => {
                                     const originalIndex = i * 2;
                                     return (
                                         <div
-                                            key={member.id}
+                                            key={member._id || originalIndex}
                                             data-index={originalIndex}
                                             ref={(el) => (cardsRef.current[originalIndex] = el)}
                                         >
@@ -540,7 +634,7 @@ const WallOfFame = () => {
                                     const originalIndex = i * 2 + 1;
                                     return (
                                         <div
-                                            key={member.id}
+                                            key={member._id || originalIndex}
                                             data-index={originalIndex}
                                             ref={(el) => (cardsRef.current[originalIndex] = el)}
                                         >

@@ -56,6 +56,7 @@ const AdminSidebar = () => {
       label: "Wall of Fame",
       colorClass: "text-google-red",
       hoverBg: "hover:bg-google-red/10",
+      link: "/admin/wall-of-fame",
     },
   ];
 

@@ -19,3 +19,4 @@ connectDB()
 app.get("/", (req, res) => {
   res.status(200).json({ status: "ok", message: "GDG Backend Running" });
 });
+export default app;

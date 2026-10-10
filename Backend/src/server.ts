@@ -16,3 +16,6 @@ connectDB()
     .catch((error) => {
         console.error("Failed to connect to the database:", error);
     });
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "ok", message: "GDG Backend Running" });
+});
